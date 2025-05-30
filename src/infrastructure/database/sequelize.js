@@ -1,4 +1,3 @@
-// src/infrastructure/database/sequelize.js
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 

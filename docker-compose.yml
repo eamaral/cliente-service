@@ -1,28 +1,10 @@
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: cs_mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: password123
-      MYSQL_DATABASE: clientes
-      MYSQL_USER: clientes_user
-      MYSQL_PASSWORD: clientes_pass
-    ports:
-      - "3307:3306"         # mapeia host:container
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      retries: 5
-
   cliente:
     build: .
-    container_name: cs_app
+    container_name: cliente
     restart: unless-stopped
     env_file:
       - .env.local
     ports:
       - "4000:4000"         # expose app na porta 4000
-    depends_on:
-      mysql:
-        condition: service_healthy
+

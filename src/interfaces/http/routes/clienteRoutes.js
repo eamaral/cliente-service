@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const verifyToken = require('../middlewares/verifyToken');
 const {
-    cadastrarCliente,
-    identificarCliente,
-    consultarPontos
-  } = require('../../../application/controllers/clienteController');
+  cadastrarCliente,
+  identificarCliente,
+  consultarPontos,
+  atualizarPontos
+} = require('../../../application/controllers/clienteController');
 
 router.use(verifyToken);
 
@@ -106,5 +107,31 @@ router.get('/identificar/:cpf', verifyToken, identificarCliente);
  *         description: Erro ao consultar pontos do cliente
  */
 router.get('/pontos/:cpf', verifyToken, consultarPontos);
+
+/**
+ * @swagger
+ * /api/clientes/{cpf}:
+ *   put:
+ *     summary: Atualizar pontos do cliente após pedido finalizado
+ *     tags: [Clientes]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: cpf
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: CPF do cliente
+ *         example: "34058799811"
+ *     responses:
+ *       200:
+ *         description: Pontos atualizados com sucesso
+ *       404:
+ *         description: Cliente não encontrado
+ *       500:
+ *         description: Erro ao atualizar pontos
+ */
+router.put('/:cpf', verifyToken, atualizarPontos);
 
 module.exports = router;
