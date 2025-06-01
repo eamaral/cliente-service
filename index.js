@@ -12,9 +12,10 @@ app.use(bodyParser.json());
 connectDB();
 
 const apiPrefix = '/api';
-const baseUrl   = process.env.API_BASE_URL || `http://localhost:4000`;
 
-// Swagger
+// Usado no Swagger. No ECS, baseUrl pode ser vazio para usar caminho relativo
+const baseUrl = process.env.API_BASE_URL || '';
+
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: '3.0.0',
@@ -24,7 +25,7 @@ const swaggerOptions = {
       description: 'Microserviços de Cliente com Auth via Cognito',
     },
     servers: [
-      { url: baseUrl, description: 'Local (Docker)' }
+      { url: `${baseUrl}${apiPrefix}`, description: 'API Swagger' }
     ],
     components: {
       securitySchemes: {
@@ -40,22 +41,20 @@ const swaggerOptions = {
 };
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(swaggerOptions)));
 
-// Rotas Auth (não protegidas)
+// Rotas públicas
 app.use(`${apiPrefix}/auth`, require('./src/interfaces/http/routes/authRoutes'));
 
-// Middleware JWT
+// Middleware de autenticação
 const verifyToken = require('./src/interfaces/http/middlewares/verifyToken');
 
-// Rotas de Cliente (protegidas)
+// Rotas protegidas
 app.use(`${apiPrefix}/clientes`, verifyToken, require('./src/interfaces/http/routes/clienteRoutes'));
 
-
-// Health
-app.get('/', (_req, res) => res.send('API Gateway: Cliente Service'));
+// Health Check
 app.get('/health', (_req, res) => res.status(200).send('OK'));
 
+// Inicia o servidor
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-  console.log(`✅ Cliente Service rodando em http://localhost:${PORT}`);
-  console.log(`📘 Swagger em        ${baseUrl}/api-docs`);
+  console.log(`✅ Cliente Service rodando na porta ${PORT}`);
 });
