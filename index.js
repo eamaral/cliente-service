@@ -13,8 +13,7 @@ connectDB();
 
 const apiPrefix = '/api';
 
-// Usado no Swagger. No ECS, baseUrl pode ser vazio para usar caminho relativo
-const baseUrl = process.env.API_BASE_URL || '';
+const baseUrl = process.env.API_BASE_URL?.replace(/\/+$/, '') || '';
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -25,7 +24,7 @@ const swaggerOptions = {
       description: 'Microserviços de Cliente com Auth via Cognito',
     },
     servers: [
-      { url: `${baseUrl}${apiPrefix}`, description: 'API Swagger' }
+      { url: `${baseUrl}`, description: 'API Swagger' }
     ],
     components: {
       securitySchemes: {
@@ -39,6 +38,7 @@ const swaggerOptions = {
     './src/interfaces/http/routes/clienteRoutes.js'
   ]
 };
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(swaggerOptions)));
 
 // Rotas públicas
