@@ -19,7 +19,7 @@ router.use(verifyToken);
 
 /**
  * @swagger
- * /api/clientes/cadastrar:
+ * /clientes/cadastrar:
  *   post:
  *     summary: Cadastrar novo cliente
  *     tags: [Clientes]
@@ -34,19 +34,15 @@ router.use(verifyToken);
  *             properties:
  *               cpf:
  *                 type: string
- *                 description: CPF do cliente (será o _id)
  *                 example: "34058799811"
  *               nome:
  *                 type: string
- *                 description: Nome do cliente
  *                 example: "Erik Amaral"
  *               email:
  *                 type: string
- *                 description: Email do cliente
  *                 example: "erik.fernandes87@gmail.com"
  *               telefone:
  *                 type: string
- *                 description: Telefone do cliente
  *                 example: "11987654321"
  *     responses:
  *       201:
@@ -54,11 +50,11 @@ router.use(verifyToken);
  *       400:
  *         description: Erro ao cadastrar cliente
  */
-router.post('/cadastrar', verifyToken, cadastrarCliente);
+router.post('/cadastrar', cadastrarCliente);
 
 /**
  * @swagger
- * /api/clientes/identificar/{cpf}:
+ * /clientes/identificar/{cpf}:
  *   get:
  *     summary: Identificar cliente via CPF
  *     tags: [Clientes]
@@ -70,7 +66,6 @@ router.post('/cadastrar', verifyToken, cadastrarCliente);
  *         required: true
  *         schema:
  *           type: string
- *         description: CPF do cliente
  *         example: "34058799811"
  *     responses:
  *       200:
@@ -80,11 +75,11 @@ router.post('/cadastrar', verifyToken, cadastrarCliente);
  *       500:
  *         description: Erro interno do servidor
  */
-router.get('/identificar/:cpf', verifyToken, identificarCliente);
+router.get('/identificar/:cpf', identificarCliente);
 
 /**
  * @swagger
- * /api/clientes/pontos/{cpf}:
+ * /clientes/pontos/{cpf}:
  *   get:
  *     summary: Consultar pontos acumulados do cliente
  *     tags: [Clientes]
@@ -96,7 +91,6 @@ router.get('/identificar/:cpf', verifyToken, identificarCliente);
  *         required: true
  *         schema:
  *           type: string
- *         description: CPF do cliente
  *         example: "34058799811"
  *     responses:
  *       200:
@@ -106,11 +100,11 @@ router.get('/identificar/:cpf', verifyToken, identificarCliente);
  *       500:
  *         description: Erro ao consultar pontos do cliente
  */
-router.get('/pontos/:cpf', verifyToken, consultarPontos);
+router.get('/pontos/:cpf', consultarPontos);
 
 /**
  * @swagger
- * /api/clientes/{cpf}:
+ * /clientes/{cpf}:
  *   put:
  *     summary: Atualizar pontos do cliente após pedido finalizado
  *     tags: [Clientes]
@@ -122,7 +116,6 @@ router.get('/pontos/:cpf', verifyToken, consultarPontos);
  *         required: true
  *         schema:
  *           type: string
- *         description: CPF do cliente
  *         example: "34058799811"
  *     responses:
  *       200:
@@ -132,6 +125,6 @@ router.get('/pontos/:cpf', verifyToken, consultarPontos);
  *       500:
  *         description: Erro ao atualizar pontos
  */
-router.put('/:cpf', verifyToken, atualizarPontos);
+router.put('/:cpf', atualizarPontos);
 
 module.exports = router;
