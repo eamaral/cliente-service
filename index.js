@@ -13,7 +13,7 @@ connectDB();
 
 const apiPrefix = '/api';
 
-const baseUrl = process.env.API_BASE_URL?.replace(/\/+$/, '') || '';
+const baseUrl = process.env.API_BASE_URL?.trim() || '';
 
 const swaggerOptions = {
   swaggerDefinition: {
