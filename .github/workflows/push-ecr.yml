@@ -42,7 +42,7 @@ jobs:
       - name: Force new ECS deployment
         run: |
           aws ecs update-service \
-            --cluster cliente-service-cluster \
+            --cluster microservices-cluster \
             --service cliente-service \
             --force-new-deployment \
             --region us-east-1
