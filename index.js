@@ -12,9 +12,9 @@ app.use(bodyParser.json());
 connectDB();
 
 const apiPrefix = '/api';
-
 const baseUrl = process.env.API_BASE_URL?.trim() || '';
 
+// Swagger config
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: '3.0.0',
@@ -53,6 +53,7 @@ app.use(`${apiPrefix}/clientes`, verifyToken, require('./src/interfaces/http/rou
 // Health Check
 app.get('/health', (_req, res) => res.status(200).send('OK'));
 
+// Log de rotas registradas
 console.log('🧩 Rotas registradas:');
 app._router.stack.forEach((middleware) => {
   if (middleware.route) {
