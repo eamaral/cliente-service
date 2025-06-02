@@ -53,6 +53,19 @@ app.use(`${apiPrefix}/clientes`, verifyToken, require('./src/interfaces/http/rou
 // Health Check
 app.get('/health', (_req, res) => res.status(200).send('OK'));
 
+console.log('🧩 Rotas registradas:');
+app._router.stack.forEach((middleware) => {
+  if (middleware.route) {
+    console.log(middleware.route.path);
+  } else if (middleware.name === 'router') {
+    middleware.handle.stack.forEach((handler) => {
+      if (handler.route) {
+        console.log(handler.route.path);
+      }
+    });
+  }
+});
+
 // Inicia o servidor
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
