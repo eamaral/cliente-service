@@ -35,7 +35,8 @@ const swaggerOptions = {
   ]
 };
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(swaggerOptions)));
+app.use('/cliente-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(swaggerOptions)));
+
 
 // ✅ Rotas fixas para garantir /api/auth e /api/clientes
 app.use('/api/auth', require('./src/interfaces/http/routes/authRoutes'));
