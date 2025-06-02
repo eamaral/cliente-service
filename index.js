@@ -1,3 +1,4 @@
+// ✅ index.js - DEFINITIVO (com prefixo fixo /api/auth e log de rotas visível)
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -8,12 +9,8 @@ const swaggerUi = require('swagger-ui-express');
 const app = express();
 app.use(bodyParser.json());
 
-// Conexão com o banco
 connectDB();
 
-const baseUrl = process.env.API_BASE_URL?.trim() || '';
-
-// Swagger config
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: '3.0.0',
@@ -23,7 +20,7 @@ const swaggerOptions = {
       description: 'Microserviços de Cliente com Auth via Cognito',
     },
     servers: [
-      { url: `${baseUrl}`, description: 'API Swagger' }
+      { url: 'http://ms-shared-alb-1023094345.us-east-1.elb.amazonaws.com/api', description: 'API Swagger' }
     ],
     components: {
       securitySchemes: {
@@ -40,19 +37,13 @@ const swaggerOptions = {
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(swaggerOptions)));
 
-// ✅ Brute force fix: monta explicitamente com /api/auth
+// ✅ Rotas fixas para garantir /api/auth e /api/clientes
 app.use('/api/auth', require('./src/interfaces/http/routes/authRoutes'));
-
-// Middleware de autenticação
 const verifyToken = require('./src/interfaces/http/middlewares/verifyToken');
-
-// Rotas protegidas
 app.use('/api/clientes', verifyToken, require('./src/interfaces/http/routes/clienteRoutes'));
 
-// Health Check
 app.get('/health', (_req, res) => res.status(200).send('OK'));
 
-// Log de rotas registradas
 console.log('🧩 Rotas registradas:');
 app._router.stack.forEach((middleware) => {
   if (middleware.route) {
@@ -66,7 +57,6 @@ app._router.stack.forEach((middleware) => {
   }
 });
 
-// Inicia o servidor
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`✅ Cliente Service rodando na porta ${PORT}`);
