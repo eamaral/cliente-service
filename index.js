@@ -11,7 +11,6 @@ app.use(bodyParser.json());
 // Conexão com o banco
 connectDB();
 
-const apiPrefix = '/api';
 const baseUrl = process.env.API_BASE_URL?.trim() || '';
 
 // Swagger config
@@ -41,14 +40,14 @@ const swaggerOptions = {
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(swaggerOptions)));
 
-// Rotas públicas
-app.use(`${apiPrefix}/auth`, require('./src/interfaces/http/routes/authRoutes'));
+// ✅ Brute force fix: monta explicitamente com /api/auth
+app.use('/api/auth', require('./src/interfaces/http/routes/authRoutes'));
 
 // Middleware de autenticação
 const verifyToken = require('./src/interfaces/http/middlewares/verifyToken');
 
 // Rotas protegidas
-app.use(`${apiPrefix}/clientes`, verifyToken, require('./src/interfaces/http/routes/clienteRoutes'));
+app.use('/api/clientes', verifyToken, require('./src/interfaces/http/routes/clienteRoutes'));
 
 // Health Check
 app.get('/health', (_req, res) => res.status(200).send('OK'));
