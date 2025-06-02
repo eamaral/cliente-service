@@ -16,7 +16,7 @@ const {
 
 /**
  * @swagger
- * /api/auth/login:
+ * /login:
  *   post:
  *     summary: Login com Cognito
  *     tags: [Auth]
@@ -43,7 +43,7 @@ router.post('/login', login);
 
 /**
  * @swagger
- * /api/auth/register:
+ * /register:
  *   post:
  *     summary: Cadastro de usuário no Cognito
  *     tags: [Auth]
@@ -70,7 +70,7 @@ router.post('/register', register);
 
 /**
  * @swagger
- * /api/auth/confirmar-senha:
+ * /confirmar-senha:
  *   post:
  *     summary: Confirma a troca da senha temporária do Cognito
  *     tags: [Auth]
@@ -100,7 +100,7 @@ router.post('/confirmar-senha', confirmarSenha);
 
 /**
  * @swagger
- * /api/auth/cpf-login:
+ * /cpf-login:
  *   post:
  *     summary: Login via CPF e senha (autentica no Cognito)
  *     tags: [Auth]
